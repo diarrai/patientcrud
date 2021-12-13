@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="template1"
+      >
+<head>
+<meta charset="utf-8">
+<title>Page Participants</title>
+<!-- <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/4.1.3/css/bootstrap.min.css"> -->
+</head>
+<body>
+  <div layout:fragment="pageContent">
+  <div class="container mt-5">
+  <div class="card">
+  <div class="card-header">Liste des Participants</div>
+  <div class="card-body">
+  <form method="get" th:action="@{participants}">
+    <div class="form-group">
+    <label>Name</label>
+    <input type="text" name="keyword" th:value="${keyword}">
+    <button class="btn btn-success">Chercher</button>
+    </div>
+  </form>
+  <table class="table">
+     <tr>
+        <th>PatientID</th> <th>Nom</th> <th>Prenom</th> <th>Sexe</th> <th>Date de Naissance</th> <th>age</th> <th>Adresse</th> <th>malade</th>
+     </tr>
+     <tr th:each="p:${participants}">
+     <td th:text="${p.PatientID}"></td>
+     <td th:text="${p.nom}"></td>
+     <td th:text="${p.prenom}"></td>
+     <td th:text="${p.sexe}"></td>
+     <td th:text="${p.dateNaissance}"></td>
+      <td th:text="${p.age}"></td>
+     <td th:text="${p.adresse}"></td>
+     <td th:text="${p.malade}"></td>
+     <td><a onclick="return confirm('Voulez vous vraiment supprimer Ibrahim Diarra?')" 
+     class="btn btn-danger" th:href="@{deleteParticipant(PatientID=${p.PatientID},keyword=${keyword},page=${currentPage})}">Delete</a></td>
+     
+     </tr>
+  </table>
+  <ul class="nav nav-pills">
+    <li  th:each="page,status:${pages}">
+      <a th:class="${status.index==currentPage?'btn btn-primary':'btn'}" 
+      th:href="@{participants(page=${status.index},keyword=${keyword})}" th:text="${status.index}"></a>
+    </li>
+  </ul>
+  </div>
+  </div>
+  </div>
+  
+  
+  </div>
+  </body>
+</html>
